@@ -147,14 +147,16 @@ async function syncQuotes() {
 
       if (conflicts.length > 0) {
         showConflictNotification(conflicts);
+        updateSyncStatus(
+          "Quotes synced with server! " +
+            `${conflicts.length} conflicts resolved.`,
+          "success"
+        );
+      } else {
+        updateSyncStatus("Quotes synced with server!", "success");
       }
-
-      updateSyncStatus(
-        `Synced with server. ${conflicts.length} conflicts resolved.`,
-        "success"
-      );
     } else {
-      updateSyncStatus("Already up to date.", "success");
+      updateSyncStatus("Quotes already up to date with server.", "success");
     }
 
     lastSyncTime = new Date();
