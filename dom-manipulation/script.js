@@ -54,8 +54,8 @@ async function init() {
   updateSyncStatus("Local data loaded. Syncing with server...");
 }
 
-// Simulate server fetch
-async function fetchFromServer() {
+// Fetch quotes from server (renamed from fetchFromServer to match requirement)
+async function fetchQuotesFromServer() {
   try {
     updateSyncStatus("Checking for server updates...");
     const response = await fetch(SERVER_URL);
@@ -101,7 +101,7 @@ async function syncWithServer() {
   syncInProgress = true;
 
   try {
-    const serverQuotes = await fetchFromServer();
+    const serverQuotes = await fetchQuotesFromServer();
     if (!serverQuotes) return;
 
     // Merge strategy: server wins conflicts
@@ -178,10 +178,10 @@ function showConflictNotification(conflicts) {
   conflicts.forEach((conflict) => {
     const item = document.createElement("li");
     item.innerHTML = `
-          <p><strong>Server version:</strong> "${conflict.server.text}" (${conflict.server.category})</p>
-          <p><strong>Your version:</strong> "${conflict.local.text}" (${conflict.local.category})</p>
-          <p>Server version was kept.</p>
-        `;
+      <p><strong>Server version:</strong> "${conflict.server.text}" (${conflict.server.category})</p>
+      <p><strong>Your version:</strong> "${conflict.local.text}" (${conflict.local.category})</p>
+      <p>Server version was kept.</p>
+    `;
     conflictList.appendChild(item);
   });
 
@@ -377,9 +377,9 @@ function showRandomQuote() {
 
   // Display the quote
   quoteDisplay.innerHTML = `
-        <div id="quoteText">"${randomQuote.text}"</div>
-        <div id="quoteCategory">— ${randomQuote.category}</div>
-      `;
+    <div id="quoteText">"${randomQuote.text}"</div>
+    <div id="quoteCategory">— ${randomQuote.category}</div>
+  `;
 
   // Store last viewed quote in sessionStorage
   sessionStorage.setItem("lastViewedQuote", JSON.stringify(randomQuote));
