@@ -4,6 +4,62 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dynamic Quote Generator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      #quoteDisplay {
+        margin: 30px 0;
+        padding: 20px;
+        border-left: 5px solid #333;
+        background-color: #f5f5f5;
+      }
+      #quoteText {
+        font-size: 1.5em;
+        font-style: italic;
+      }
+      #quoteCategory {
+        margin-top: 10px;
+        font-weight: bold;
+        color: #555;
+      }
+      button {
+        padding: 8px 15px;
+        background-color: #333;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+      button:hover {
+        background-color: #555;
+      }
+      .category-btn {
+        margin: 5px;
+      }
+      .active {
+        background-color: #4caf50;
+      }
+      .form-container {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+      input {
+        padding: 8px;
+        margin-right: 10px;
+        width: 300px;
+      }
+      .data-controls {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #e0e0e0;
+      }
+    </style>
   </head>
   <body>
     <h1>Dynamic Quote Generator</h1>
@@ -20,15 +76,16 @@
 
     <button id="newQuote">Show New Quote</button>
 
-    <div id="addQuoteForm">
-      <h3>Add a new quote:</h3>
-      <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
-      <input
-        id="newQuoteCategory"
-        type="text"
-        placeholder="Enter quote category"
-      />
-      <button onclick="addQuote()">Add Quote</button>
+    <div id="quoteControls"></div>
+
+    <div class="data-controls">
+      <h3>Data Management:</h3>
+      <button id="exportQuotes">Export Quotes as JSON</button>
+      <button id="clearStorage">Clear Local Storage</button>
+      <div style="margin-top: 10px">
+        <input type="file" id="importFile" accept=".json" />
+        <button onclick="importFromJson()">Import Quotes</button>
+      </div>
     </div>
 
     <script src="script.js"></script>
