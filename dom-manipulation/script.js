@@ -24,12 +24,12 @@ const newQuoteCategory = document.getElementById("newQuoteCategory");
 // Show random quote
 function showRandomQuote() {
   if (quotes.length === 0) {
-    quoteDisplay.textContent = "No quotes available.";
+    quoteDisplay.innerHTML = "No quotes available.";
     return;
   }
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const { text, category } = quotes[randomIndex];
-  quoteDisplay.textContent = `"${text}" — (${category})`;
+  quoteDisplay.innerHTML = `"${text}" — (${category})`;
 }
 
 // Add new quote
