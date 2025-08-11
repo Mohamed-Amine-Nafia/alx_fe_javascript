@@ -36,6 +36,7 @@ const quoteTextElement = document.getElementById("quoteText");
 const quoteCategoryElement = document.getElementById("quoteCategory");
 const newQuoteButton = document.getElementById("newQuote");
 const categoryButtonsContainer = document.getElementById("categoryButtons");
+const quoteControlsContainer = document.getElementById("quoteControls");
 
 // Current category filter
 let currentCategory = null;
@@ -50,6 +51,9 @@ function init() {
 
   // Generate category buttons
   updateCategoryButtons();
+
+  // Create the add quote form dynamically
+  createAddQuoteForm();
 }
 
 // Show a random quote
@@ -111,6 +115,56 @@ function updateCategoryButtons() {
     });
     categoryButtonsContainer.appendChild(button);
   });
+}
+
+// Create the add quote form dynamically
+function createAddQuoteForm() {
+  // Remove existing form if it exists
+  const existingForm = document.getElementById("addQuoteForm");
+  if (existingForm) {
+    existingForm.remove();
+  }
+
+  // Create form container
+  const formContainer = document.createElement("div");
+  formContainer.id = "addQuoteForm";
+  formContainer.style.marginTop = "30px";
+  formContainer.style.padding = "20px";
+  formContainer.style.backgroundColor = "#f0f0f0";
+
+  // Create heading
+  const heading = document.createElement("h3");
+  heading.textContent = "Add a new quote:";
+  formContainer.appendChild(heading);
+
+  // Create quote text input
+  const quoteInput = document.createElement("input");
+  quoteInput.id = "newQuoteText";
+  quoteInput.type = "text";
+  quoteInput.placeholder = "Enter a new quote";
+  quoteInput.style.padding = "8px";
+  quoteInput.style.marginRight = "10px";
+  quoteInput.style.width = "300px";
+  formContainer.appendChild(quoteInput);
+
+  // Create category input
+  const categoryInput = document.createElement("input");
+  categoryInput.id = "newQuoteCategory";
+  categoryInput.type = "text";
+  categoryInput.placeholder = "Enter quote category";
+  categoryInput.style.padding = "8px";
+  categoryInput.style.marginRight = "10px";
+  categoryInput.style.width = "300px";
+  formContainer.appendChild(categoryInput);
+
+  // Create submit button
+  const submitButton = document.createElement("button");
+  submitButton.textContent = "Add Quote";
+  submitButton.onclick = addQuote;
+  formContainer.appendChild(submitButton);
+
+  // Add form to the DOM
+  document.body.appendChild(formContainer);
 }
 
 // Add a new quote to the database
