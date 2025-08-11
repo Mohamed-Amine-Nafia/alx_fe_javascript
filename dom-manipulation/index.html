@@ -7,17 +7,30 @@
   </head>
   <body>
     <h1>Dynamic Quote Generator</h1>
-    <div id="quoteDisplay"></div>
-    <button id="newQuote" onclick="showRandomQuote()">Show New Quote</button>
-    <div>
+
+    <div id="categoryControls">
+      <h3>Select a category:</h3>
+      <div id="categoryButtons"></div>
+    </div>
+
+    <div id="quoteDisplay">
+      <div id="quoteText">Click "Show New Quote" to see a quote!</div>
+      <div id="quoteCategory"></div>
+    </div>
+
+    <button id="newQuote">Show New Quote</button>
+
+    <div id="addQuoteForm">
+      <h3>Add a new quote:</h3>
       <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
       <input
         id="newQuoteCategory"
         type="text"
         placeholder="Enter quote category"
       />
-      <button onclick="createAddQuoteForm()">Add Quote</button>
+      <button onclick="addQuote()">Add Quote</button>
     </div>
+
     <script src="script.js"></script>
   </body>
 </html>
