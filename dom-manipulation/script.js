@@ -33,7 +33,7 @@ function showRandomQuote() {
 }
 
 // Add new quote
-function addQuote() {
+function createAddQuoteForm() {
   const text = newQuoteText.value.trim();
   const category = newQuoteCategory.value.trim();
 
@@ -50,7 +50,7 @@ function addQuote() {
 
 // Event listeners
 newQuoteBtn.addEventListener("click", showRandomQuote);
-addQuoteBtn.addEventListener("click", addQuote);
+addQuoteBtn.addEventListener("click", createAddQuoteForm);
 
 // Show first random quote on load
 showRandomQuote();
