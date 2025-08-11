@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dynamic Quote Generator</title>
+    <title>Dynamic Quote Generator with Sync</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -38,12 +38,6 @@
       button:hover {
         background-color: #555;
       }
-      .category-btn {
-        margin: 5px;
-      }
-      .active {
-        background-color: #4caf50;
-      }
       .form-container {
         margin-top: 30px;
         padding: 20px;
@@ -65,10 +59,69 @@
         padding: 15px;
         background-color: #e8e8e8;
       }
+      /* Sync status styles */
+      .sync-status {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+      }
+      .sync-info {
+        background-color: #e7f3fe;
+        border-left: 6px solid #2196f3;
+      }
+      .sync-success {
+        background-color: #ddffdd;
+        border-left: 6px solid #4caf50;
+      }
+      .sync-error {
+        background-color: #ffdddd;
+        border-left: 6px solid #f44336;
+      }
+      .sync-time {
+        font-size: 0.8em;
+        color: #666;
+      }
+      /* Conflict notification styles */
+      .conflict-notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 400px;
+        max-width: 90%;
+        padding: 15px;
+        background-color: #fff3cd;
+        border-left: 6px solid #ffc107;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      }
+      .conflict-notification h4 {
+        margin-top: 0;
+        color: #856404;
+      }
+      .conflict-notification ul {
+        padding-left: 20px;
+      }
+      .conflict-notification li {
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ffeeba;
+      }
+      .conflict-notification li:last-child {
+        border-bottom: none;
+      }
+      .conflict-notification button {
+        background-color: #ffc107;
+        color: #000;
+        margin-top: 10px;
+      }
+      .no-quotes {
+        color: #666;
+        font-style: italic;
+      }
     </style>
   </head>
   <body>
-    <h1>Dynamic Quote Generator</h1>
+    <h1>Dynamic Quote Generator with Sync</h1>
 
     <div class="filter-controls">
       <h3>Filter Quotes:</h3>
@@ -92,10 +145,15 @@
       <h3>Data Management:</h3>
       <button id="exportQuotes">Export Quotes as JSON</button>
       <button id="clearStorage">Clear Local Storage</button>
+      <button id="manualSync">Sync Now</button>
       <div style="margin-top: 10px">
         <input type="file" id="importFile" accept=".json" />
         <button onclick="importFromJson()">Import Quotes</button>
       </div>
+    </div>
+
+    <div id="syncStatus" class="sync-status sync-info">
+      Sync Status: Loading...
     </div>
 
     <script src="script.js"></script>
