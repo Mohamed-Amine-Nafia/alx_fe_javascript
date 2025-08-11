@@ -28,10 +28,10 @@ async function init() {
 
   // If no quotes in storage, try loading from server
   if (quotes.length === 0) {
-    await syncWithServer();
+    await syncQuotes();
   } else {
     // Still check for updates from server
-    setTimeout(syncWithServer, 2000);
+    setTimeout(syncQuotes, 2000);
   }
 
   // Setup event listeners
@@ -40,13 +40,13 @@ async function init() {
   clearStorageButton.addEventListener("click", clearLocalStorage);
   clearFilterButton.addEventListener("click", clearFilter);
   categoryFilterSelect.addEventListener("change", filterQuotes);
-  manualSyncButton.addEventListener("click", syncWithServer);
+  manualSyncButton.addEventListener("click", syncQuotes);
 
   // Create the add quote form dynamically
   createAddQuoteForm();
 
   // Set up periodic sync
-  setInterval(syncWithServer, syncInterval);
+  setInterval(syncQuotes, syncInterval);
 
   // Display first quote
   showRandomQuote();
@@ -99,8 +99,74 @@ async function postToServer(quotesToSync) {
   }
 }
 
-// [Rest of the functions remain exactly the same as in the previous implementation]
-// ... (all other functions remain unchanged)
+// Main sync function (renamed from syncWithServer to match requirement)
+async function syncQuotes() {
+  if (syncInProgress) return;
+  syncInProgress = true;
+
+  try {
+    const serverQuotes = await fetchQuotesFromServer();
+    if (!serverQuotes) return;
+
+    // Merge strategy: server wins conflicts
+    const localQuotes = [...quotes];
+    const mergedQuotes = [];
+    const conflicts = [];
+
+    // Add all server quotes (server wins)
+    serverQuotes.forEach((serverQuote) => {
+      const localIndex = localQuotes.findIndex((q) => q.id === serverQuote.id);
+      if (localIndex >= 0) {
+        // Conflict detected
+        const localQuote = localQuotes[localIndex];
+        if (
+          localQuote.text !== serverQuote.text ||
+          localQuote.category !== serverQuote.category
+        ) {
+          conflicts.push({
+            server: serverQuote,
+            local: localQuote,
+          });
+        }
+        mergedQuotes.push(serverQuote);
+        localQuotes.splice(localIndex, 1);
+      } else {
+        mergedQuotes.push(serverQuote);
+      }
+    });
+
+    // Add remaining local quotes
+    mergedQuotes.push(...localQuotes);
+
+    // Update local storage if changes detected
+    if (JSON.stringify(quotes) !== JSON.stringify(mergedQuotes)) {
+      quotes = mergedQuotes;
+      saveQuotes();
+      populateCategories();
+
+      if (conflicts.length > 0) {
+        showConflictNotification(conflicts);
+      }
+
+      updateSyncStatus(
+        `Synced with server. ${conflicts.length} conflicts resolved.`,
+        "success"
+      );
+    } else {
+      updateSyncStatus("Already up to date.", "success");
+    }
+
+    lastSyncTime = new Date();
+  } catch (error) {
+    console.error("Sync failed:", error);
+    updateSyncStatus("Sync failed. Will retry.", "error");
+  } finally {
+    syncInProgress = false;
+  }
+}
+
+// [All other functions remain exactly the same as in previous implementation]
+// ... (showConflictNotification, updateSyncStatus, loadDefaultQuotes, etc.)
 
 // Initialize the app when the page loads
 document.addEventListener("DOMContentLoaded", init);
