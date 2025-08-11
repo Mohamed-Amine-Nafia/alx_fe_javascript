@@ -3,8 +3,7 @@ let quotes = [];
 let currentFilter = null;
 
 // DOM elements
-const quoteTextElement = document.getElementById("quoteText");
-const quoteCategoryElement = document.getElementById("quoteCategory");
+const quoteDisplay = document.getElementById("quoteDisplay");
 const newQuoteButton = document.getElementById("newQuote");
 const quoteControlsContainer = document.getElementById("quoteControls");
 const exportQuotesButton = document.getElementById("exportQuotes");
@@ -163,10 +162,9 @@ function showRandomQuote() {
 
   // If no quotes in filtered list, show message
   if (filteredQuotes.length === 0) {
-    quoteTextElement.textContent = currentFilter
-      ? `No quotes found in category "${currentFilter}"`
-      : "No quotes available";
-    quoteCategoryElement.textContent = "";
+    quoteDisplay.innerHTML = currentFilter
+      ? `<div class="no-quotes">No quotes found in category "${currentFilter}"</div>`
+      : '<div class="no-quotes">No quotes available</div>';
     return;
   }
 
@@ -175,8 +173,10 @@ function showRandomQuote() {
   const randomQuote = filteredQuotes[randomIndex];
 
   // Display the quote
-  quoteTextElement.textContent = `"${randomQuote.text}"`;
-  quoteCategoryElement.textContent = `— ${randomQuote.category}`;
+  quoteDisplay.innerHTML = `
+    <div id="quoteText">"${randomQuote.text}"</div>
+    <div id="quoteCategory">— ${randomQuote.category}</div>
+  `;
 
   // Store last viewed quote in sessionStorage
   sessionStorage.setItem("lastViewedQuote", JSON.stringify(randomQuote));
